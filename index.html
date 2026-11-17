@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menú Digital | Tostaderia La Crudita</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+
+    <!-- ENCABEZADO DE MARCA -->
+    <header class="client-header">
+        <div class="header-overlay">
+            <div class="brand-logo-wrap">
+                <img src="img/logo.jpeg" alt="Tostaderia La Crudita" class="brand-logo"
+                     onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-shrimp\'></i>'">
+            </div>
+            <div class="brand-info">
+                <span class="origin-badge" id="qr-origin-badge"><i class="fa-solid fa-qrcode"></i> Menú Digital</span>
+                <h1>Tostaderia La Crudita</h1>
+                <p>Mariscos frescos, aguachiles y tostadas al momento</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVEGACIÓN INFERIOR FLOTANTE TIPO APP -->
+    <nav class="bottom-tabbar">
+        <button class="tab-btn active" onclick="switchClientTab('carta', this)">
+            <i class="fa-solid fa-shrimp"></i>
+            <span>Menú</span>
+        </button>
+        <button class="tab-btn" onclick="switchClientTab('viral', this)">
+            <i class="fa-solid fa-camera-retro"></i>
+            <span>Presume tu Crudita</span>
+        </button>
+        <button class="tab-btn" onclick="switchClientTab('encuesta', this)">
+            <i class="fa-solid fa-star"></i>
+            <span>Opinar (30s)</span>
+        </button>
+    </nav>
+
+    <!-- =========================================================
+         SECCIÓN 1: MENÚ DIGITAL INTERACTIVO CON FOTOS Y PRECIOS
+    ========================================================== -->
+    <main id="tab-carta" class="client-section active">
+        <div class="search-bar-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="client-search" placeholder="¿Qué se te antoja hoy? (Aguachile, tostada...)" oninput="renderClientMenu()">
+        </div>
+
+        <div class="category-pills" id="client-categories"></div>
+
+        <div class="menu-cards-grid" id="client-menu-grid">
+            <div class="skeleton-loader">Cargando platillos frescos...</div>
+        </div>
+
+        <!-- Banner promocional dentro del menú -->
+        <div class="promo-callout" onclick="switchClientTab('viral', document.querySelectorAll('.tab-btn')[1])">
+            <div>
+                <strong><i class="fa-solid fa-gift"></i> ¡Gana bebidas y descuentos!</strong>
+                <p>Sube tu foto etiquetando a <b>@TostaderiaLaCrudita</b> y entra a la ruleta semanal.</p>
+            </div>
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+    </main>
+
+    <!-- =========================================================
+         SECCIÓN 2: DINÁMICA VIRAL "PRESUME TU CRUDITA"
+    ========================================================== -->
+    <main id="tab-viral" class="client-section">
+        <div class="card-box viral-hero">
+            <span class="pill-tag">SORTEO SEMANAL DE CLIENTES</span>
+            <h2>📸 #PresumeTuCrudita</h2>
+            <p>Convierte tu antojo en premios gratis. Sigue estos 3 pasos:</p>
+
+            <ol class="steps-list">
+                <li><strong>1. Toma foto o historia</strong> de tus tostadas, aguachile o tu visita.</li>
+                <li><strong>2. Etiquétanos</strong> en Facebook o Instagram como <b>@TostaderiaLaCrudita</b>.</li>
+                <li><strong>3. Registra tu participación abajo</strong> para girar en nuestra Ruleta Digital y ganar cupones canjeables en caja.</li>
+            </ol>
+
+            <div class="social-share-row">
+                <a href="https://www.facebook.com/" target="_blank" class="btn-social fb">
+                    <i class="fa-brands fa-facebook"></i> Abrir Facebook
+                </a>
+                <a href="https://www.instagram.com/" target="_blank" class="btn-social ig">
+                    <i class="fa-brands fa-instagram"></i> Abrir Instagram
+                </a>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <h3><i class="fa-solid fa-ticket"></i> Registro al Sorteo / Ruleta</h3>
+            <form id="viral-form" onsubmit="submitViralEntry(event)" class="clean-form">
+                <label>Tu Nombre Completo *</label>
+                <input type="text" id="v-name" required placeholder="Ej. Carlos Mendoza">
+
+                <label>WhatsApp (para enviarte tu cupón si ganas) *</label>
+                <input type="tel" id="v-phone" required placeholder="10 dígitos (Ej. 3312345678)">
+
+                <label>¿Dónde subiste tu foto/historia? *</label>
+                <select id="v-platform">
+                    <option value="Facebook">Facebook (@TostaderiaLaCrudita)</option>
+                    <option value="Instagram">Instagram (@TostaderiaLaCrudita)</option>
+                    <option value="TikTok">TikTok (@TostaderiaLaCrudita)</option>
+                </select>
+
+                <label>Tu Usuario o Nombre en la Red Social *</label>
+                <input type="text" id="v-handle" required placeholder="Ej. @carlos.mendoza">
+
+                <label>Folio de Ticket o Mesa (Opcional)</label>
+                <input type="text" id="v-folio" placeholder="Ej. Mesa 3 o Folio #1042">
+
+                <button type="submit" class="btn-primary-full" id="btn-submit-viral">
+                    <i class="fa-solid fa-paper-plane"></i> Registrarme en la Ruleta
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- =========================================================
+         SECCIÓN 3: ENCUESTA DE SATISFACCIÓN EXPRESS (30 SEGUNDOS)
+    ========================================================== -->
+    <main id="tab-encuesta" class="client-section">
+        <div class="card-box">
+            <h2><i class="fa-solid fa-bolt"></i> Tu opinión en 30 segundos</h2>
+            <p class="muted-text">Ayúdanos a mejorar cada día. ¿Cómo estuvo tu experiencia hoy?</p>
+
+            <form id="survey-form" onsubmit="submitExpressSurvey(event)" class="clean-form">
+                <div class="rating-group">
+                    <label>Calificación General *</label>
+                    <div class="star-selector" data-field="rating">
+                        <button type="button" onclick="setRating('rating', 1, this)">1 ⭐</button>
+                        <button type="button" onclick="setRating('rating', 2, this)">2 ⭐</button>
+                        <button type="button" onclick="setRating('rating', 3, this)">3 ⭐</button>
+                        <button type="button" onclick="setRating('rating', 4, this)">4 ⭐</button>
+                        <button type="button" class="active" onclick="setRating('rating', 5, this)">5 ⭐</button>
+                    </div>
+                </div>
+
+                <div class="mini-metrics">
+                    <div>
+                        <label>Sabor y Calidad</label>
+                        <select id="s-food">
+                            <option value="5">Excelente (5/5)</option>
+                            <option value="4">Muy bueno (4/5)</option>
+                            <option value="3">Regular (3/5)</option>
+                            <option value="2">Malo (2/5)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Atención y Rapidez</label>
+                        <select id="s-speed">
+                            <option value="5">Súper rápido (5/5)</option>
+                            <option value="4">Buen tiempo (4/5)</option>
+                            <option value="3">Tardado (3/5)</option>
+                            <option value="2">Muy lento (2/5)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label>¿Algún comentario o sugerencia?</label>
+                <textarea id="s-comment" rows="3" placeholder="Cuéntanos qué te encantó o qué podemos mejorar..."></textarea>
+
+                <button type="submit" class="btn-primary-full" id="btn-submit-survey">
+                    Enviar Evaluación
+                </button>
+            </form>
+
+            <!-- Resultado dinámico tras enviar encuesta -->
+            <div id="survey-result-box" class="result-panel hidden"></div>
+        </div>
+    </main>
+
+    <!-- MODAL DE DETALLE DEL PLATILLO -->
+    <div id="dish-detail-modal" class="client-modal hidden" onclick="if(event.target===this) closeDishModal()">
+        <div class="client-modal-card">
+            <button class="close-modal-x" onclick="closeDishModal()">&times;</button>
+            <img id="dm-img" src="" alt="Platillo">
+            <div class="dm-body">
+                <span class="dm-cat" id="dm-cat">Categoría</span>
+                <h3 id="dm-title">Nombre del Platillo</h3>
+                <p id="dm-desc">Descripción completa del platillo...</p>
+                <div class="dm-footer">
+                    <span class="dm-price" id="dm-price">$0.00</span>
+                    <span class="dm-order-hint"><i class="fa-solid fa-bell-concierge"></i> Pídelo a tu mesero o en caja</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="menu.js"></script>
+</body>
+</html>
